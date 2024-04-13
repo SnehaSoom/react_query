@@ -2,30 +2,33 @@
 import React from 'react';
 import { useQuery } from 'react-query';
 
-const ProductList = () => {
+const ProductList = ({addProduct=[]}) => {
   const { data: products, isLoading, isError } = useQuery('products', async () => {
     const response = await fetch('https://dummyjson.com/products');
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    return response.json();
+
+    // console.log('response.json()', await response.json())
+    return await response.json();
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error fetching data</div>;
 
-  if (!Array.isArray(products)) {
+  if (!Array.isArray(products?.products)) {
     // Handle the case where products is not an array
     console.error('Products data is not an array:', products);
     return null;
   }
 
+
   return (
-    <div>
-      <h2>Product List</h2>
+    <div style={{ backgroundColor: 'lightgray', padding: '20px' }}>
+      <h2 style={{ color: 'maroon' }}>Product List</h2>
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>
+        {[...addProduct , ...products?.products]?.map((product) => (
+          <li key={product.title}>
             <h3>{product.title}</h3>
             {/* <p>{product.body}</p> */}
           </li>

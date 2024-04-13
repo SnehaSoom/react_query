@@ -1,15 +1,14 @@
-// AddProductForm.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
 
-const AddProductForm = () => {
+const AddProductForm = ({responseData}) => {
   const [formData, setFormData] = React.useState({
-    name: '',
+    title: '',
     description: '',
     price: ''
   });
 
-  const { name, description, price } = formData;
+  const { title, description, price } = formData;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,22 +19,41 @@ const AddProductForm = () => {
     // Simulate posting data to the API
     console.log('Posting new product:', newProduct);
     // Replace this with your actual API call
-    return fetch('https://dummyjson.com/products', { method: 'POST', body: JSON.stringify(newProduct) })
+    return fetch('https://dummyjson.com/products/add', { method: 'POST', body: JSON.stringify(newProduct) })
+      .then(response => response.json()); // Parse response as JSON
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
     mutation.mutate(formData);
-    setFormData({ name: '', description: '', price: '' }); // Reset form after submission
+    setFormData({ title: '', description: '', price: '' }); // Reset form after submission
   };
 
+  useEffect(()=> {
+    if(mutation.isSuccess){
+      responseData({...mutation.data, ...mutation.variables})
+    }
+
+  }, [mutation.isSuccess])
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text" name="name" value={name} onChange={handleChange} placeholder="Product Name" />
-      <input type="text" name="description" value={description} onChange={handleChange} placeholder="Description" />
-      <input type="text" name="price" value={price} onChange={handleChange} placeholder="Price" />
-      <button type="submit">Add Product</button>
-    </form>
+    <div>
+      <form onSubmit={handleSubmit}>
+        <input type="text" name="title" value={title} onChange={handleChange} placeholder="Product Name" />
+        <input type="text" name="description" value={description} onChange={handleChange} placeholder="Description" />
+        <input type="text" name="price" value={price} onChange={handleChange} placeholder="Price" />
+        <button type="submit">Add Product</button>
+      </form>
+      {mutation.isSuccess && (
+        <div>
+          <p>Product added successfully!</p>
+          {/* <p>Title: {mutation.data.title}</p>
+          <p>Description: {mutation.data.description}</p>
+          <p>Price: {mutation.data.price}</p> */}
+        </div>
+      )}
+      {mutation.isError && <p>Error adding product: {mutation.error.message}</p>}
+    </div>
   );
 };
 
