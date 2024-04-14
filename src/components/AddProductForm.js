@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useMutation } from 'react-query';
+import './AddProductForm.css';
 
 const AddProductForm = ({responseData}) => {
   const [formData, setFormData] = React.useState({
@@ -37,12 +38,14 @@ const AddProductForm = ({responseData}) => {
   }, [mutation.isSuccess])
 
   return (
-    <div>
+    <div className='form-container'>
       <form onSubmit={handleSubmit}>
-        <input type="text" name="title" value={title} onChange={handleChange} placeholder="Product Name" />
-        <input type="text" name="description" value={description} onChange={handleChange} placeholder="Description" />
-        <input type="text" name="price" value={price} onChange={handleChange} placeholder="Price" />
-        <button type="submit">Add Product</button>
+        <div className='form-field'>
+        <input className='form-field' type="text" name="title" value={title} onChange={handleChange} placeholder="Product Name" />
+        <input className='form-field' type="text" name="description" value={description} onChange={handleChange} placeholder="Description" />
+        <input className='form-field' type="text" name="price" value={price} onChange={handleChange} placeholder="Price" />
+        </div>
+        <button className='submit-button' type="submit">Add Product</button>
       </form>
       {mutation.isSuccess && (
         <div>

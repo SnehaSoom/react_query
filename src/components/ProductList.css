@@ -1,0 +1,15 @@
+/* ProductList.css */
+
+/* Example styles */
+.product-list-container {
+  background-color: lightgray;
+  padding: 20px;
+}
+
+.product-list-title {
+  color: maroon;
+}
+
+.product-item {
+  margin-bottom: 10px;
+}

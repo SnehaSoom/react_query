@@ -1,6 +1,7 @@
 // ProductList.js
 import React from 'react';
 import { useQuery } from 'react-query';
+import './ProductList.css'
 
 const ProductList = ({addProduct=[]}) => {
   const { data: products, isLoading, isError } = useQuery('products', async () => {
@@ -24,9 +25,9 @@ const ProductList = ({addProduct=[]}) => {
 
 
   return (
-    <div style={{ backgroundColor: 'lightgray', padding: '20px' }}>
-      <h2 style={{ color: 'maroon' }}>Product List</h2>
-      <ul>
+    <div className='product-list-container'> 
+      <h2 className='product-list-title'>Product List</h2>
+      <ul className='product-item'>
         {[...addProduct , ...products?.products]?.map((product) => (
           <li key={product.title}>
             <h3>{product.title}</h3>
